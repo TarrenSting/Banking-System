@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "MainApp",
+      "request": "launch",
+      "mainClass": "bank.view.MainApp",
+      "projectName": "banking-system"
+    },
+    {
+      "type": "java",
+      "name": "Banking System",
+      "request": "launch",
+      "mainClass": "bank.view.Launcher",
+      "vmArgs": "-Dprism.order=sw",
+      "env": {
+        "DISPLAY": ":1"
+      }
+    }
+  ]
+}

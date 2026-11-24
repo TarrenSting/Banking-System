@@ -1,0 +1,19 @@
+{
+  "name": "CSE202 Banking System",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/banking-system",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": { "version": "21", "installMaven": "true" },
+    "ghcr.io/devcontainers/features/desktop-lite:1": { "password": "bank123" }
+  },
+  "forwardPorts": [6080],
+  "portsAttributes": {
+  "6080": { "label": "Desktop (open this to see the GUI)", "onAutoForward": "openBrowser" }
+},
+  "containerEnv": { "DISPLAY": ":1" },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libgtk-3-0 libgl1 libxtst6 libxxf86vm1 && mvn -q -DskipTests compile",
+  "customizations": {
+    "vscode": { "extensions": ["vscjava.vscode-java-pack"] }
+  }
+}

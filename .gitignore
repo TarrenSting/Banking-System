@@ -1,0 +1,5 @@
+target/
+compiled/
+compiled-src/
+*.class
+.idea/
