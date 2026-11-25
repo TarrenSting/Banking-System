@@ -1,6 +1,7 @@
 package bank.controller;
 
 import bank.dao.UserDAO;
+import bank.model.Role;
 import bank.model.User;
 import bank.view.LoginView;
 
@@ -20,7 +21,7 @@ public class LoginController implements LoginView.Listener {
     }
 
     @Override
-    public void onLogin(String username, String password) {
+    public void onLogin(String username, String password, boolean asTeller) {
         if (username == null || username.isBlank() || password == null || password.isEmpty()) {
             view.showError("Enter your username and password.");
             view.clearPassword();
@@ -30,6 +31,13 @@ public class LoginController implements LoginView.Listener {
         // The same message for an unknown username and a wrong password (NFR-01, FR-06).
         if (user == null || !user.login(password)) {
             view.showError("Invalid username or password.");
+            view.clearPassword();
+            return;
+        }
+        if (asTeller != (user.getRole() == Role.TELLER)) {
+            user.logout();
+            view.showError(asTeller ? "This is a customer account. Use the Customer login."
+                    : "This is a staff account. Use the Teller login.");
             view.clearPassword();
             return;
         }

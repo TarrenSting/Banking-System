@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 public abstract class BaseView {
 
     private final Label status = new Label();
+    private boolean darkBackground;
 
     protected BaseView() {
         status.setWrapText(true);
@@ -23,15 +24,20 @@ public abstract class BaseView {
         return status;
     }
 
+    /** Call for a screen with a dark background, so messages use lighter colours. */
+    protected void useLightMessages() {
+        darkBackground = true;
+    }
+
     /** Shows a success or information message in green. */
     public void showMessage(String text) {
-        status.setStyle("-fx-text-fill: #1b6e2f; -fx-font-weight: bold;");
+        status.setStyle("-fx-text-fill: " + (darkBackground ? "#7ee2a0" : "#1b6e2f") + "; -fx-font-weight: bold;");
         status.setText(text);
     }
 
     /** Shows an error message in red. */
     public void showError(String text) {
-        status.setStyle("-fx-text-fill: #b3261e; -fx-font-weight: bold;");
+        status.setStyle("-fx-text-fill: " + (darkBackground ? "#ff9a9a" : "#b3261e") + "; -fx-font-weight: bold;");
         status.setText(text);
     }
 

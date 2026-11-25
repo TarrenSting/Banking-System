@@ -2,12 +2,16 @@ package bank.view;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.VBox;
 
 import java.util.function.Function;
@@ -24,9 +28,14 @@ final class Ui {
     static final String RED = "#c62828";
     static final String SLATE = "#455a64";
 
-    /** Light blue page with a soft gradient; -fx-base tints every control and table header. */
-    static final String PAGE_STYLE = "-fx-base: #d6e8fa; -fx-accent: #1976d2; -fx-focus-color: #1976d2;"
-            + " -fx-background-color: linear-gradient(to bottom, #e3f0fc, #f8fbff);";
+    static final String DEEP = "#0a1f5c";
+    static final String ACCENT = "#1f6feb";
+    static final String PAGE_BG = "#c3d5f2";
+    static final String BANK_NAME = "Unity Bank";
+
+    /** Pale blue page; -fx-base tints every control and table header. */
+    static final String PAGE_STYLE = "-fx-base: #b4c9ec; -fx-accent: #1f6feb; -fx-focus-color: #1f6feb;"
+            + " -fx-background-color: " + PAGE_BG + ";";
 
     /** White card with a shadow, used for the login box. */
     static final String CARD_STYLE = "-fx-base: #d6e8fa; -fx-accent: #1976d2; -fx-focus-color: #1976d2;"
@@ -92,8 +101,9 @@ final class Ui {
     static VBox card(Node... children) {
         VBox box = new VBox(10, children);
         box.setPadding(new Insets(14));
-        box.setStyle("-fx-background-color: white; -fx-background-radius: 12;"
-                + " -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 12, 0.1, 0, 3);");
+        box.setStyle("-fx-background-color: #e4edfb; -fx-background-radius: 12;"
+                + " -fx-border-color: #a9bfe6; -fx-border-radius: 12;"
+                + " -fx-effect: dropshadow(gaussian, rgba(10,31,92,0.25), 12, 0.1, 0, 3);");
         return box;
     }
 
@@ -114,9 +124,28 @@ final class Ui {
         VBox box = new VBox(2, number, text);
         box.setPadding(new Insets(10, 18, 10, 18));
         box.setMinWidth(150);
-        box.setStyle("-fx-background-color: white; -fx-background-radius: 12;"
+        box.setStyle("-fx-background-color: #e4edfb; -fx-background-radius: 12;"
                 + " -fx-border-color: " + color + "; -fx-border-width: 0 0 0 5; -fx-border-radius: 12;"
                 + " -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.1, 0, 2);");
+        return box;
+    }
+
+    /** A white bank-building icon (roof, four pillars, base) drawn with shapes, so it needs no image file. */
+    static VBox logo(double scale) {
+        Polygon roof = new Polygon(0, 18 * scale, 30 * scale, 0, 60 * scale, 18 * scale);
+        roof.setStyle("-fx-fill: white;");
+        HBox pillars = new HBox(5 * scale);
+        pillars.setAlignment(Pos.CENTER);
+        for (int i = 0; i < 4; i++) {
+            Rectangle pillar = new Rectangle(8 * scale, 22 * scale);
+            pillar.setStyle("-fx-fill: white;");
+            pillars.getChildren().add(pillar);
+        }
+        Rectangle base = new Rectangle(60 * scale, 5 * scale);
+        base.setStyle("-fx-fill: white;");
+        VBox box = new VBox(3 * scale, roof, pillars, base);
+        box.setAlignment(Pos.CENTER);
+        box.setMaxWidth(60 * scale);
         return box;
     }
 

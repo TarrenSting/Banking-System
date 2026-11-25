@@ -70,7 +70,7 @@ public class AppController {
 
     public void bindLogin(LoginView view, Runnable onSuccess) {
         view.setListener(new LoginController(view, users, session, onSuccess));
-       view.showMessage(storageNote);
+        view.showMessage(storageNote);
     }
 
     public void bindCustomers(CustomerView view) {
@@ -146,18 +146,43 @@ public class AppController {
             for (var account : session.getCustomer().getAccounts()) {
                 total = total.add(account.getBalance());
             }
-            figures.put("Your accounts", String.valueOf(session.getCustomer().getAccounts().size()));
             figures.put("Total balance (BWP)", total.toPlainString());
         }
         return figures;
+    }
+
+    public String dashboardTitle() {
+        return session.isTeller() ? "Teller Dashboard" : "Customer Dashboard";
+    }
+
+    /** The logged-in customer's accounts, for the cards on the dashboard (none for a teller). */
+    public java.util.List<bank.view.ViewData.AccountRow> accountRows() {
+        if (!session.isCustomer()) {
+            return java.util.List.of();
+        }
+        return session.getCustomer().getAccounts().stream().map(Rows::account).toList();
+    }
+
+    /** The customer's five newest transactions across all their accounts (none for a teller). */
+    public java.util.List<bank.view.ViewData.TransactionRow> recentTransactions() {
+        if (!session.isCustomer()) {
+            return java.util.List.of();
+        }
+        return session.getCustomer().getAccounts().stream()
+                .flatMap(account -> account.getTransactions().stream())
+                .sorted(java.util.Comparator.comparing(bank.model.Transaction::getTime).reversed())
+                .limit(5)
+                .map(Rows::transaction)
+                .toList();
     }
 
     public String welcomeText() {
         if (session.getUser() == null) {
             return "";
         }
-        String who = session.isCustomer() ? session.getCustomer().getFullName() : "bank teller";
-        return "Signed in as " + session.getUser().getUsername() + " (" + who + ")";
+        return session.isCustomer()
+                ? "Welcome, " + session.getCustomer().getFullName()
+                : "Teller: " + session.getUser().getUsername();
     }
 
     public void logOut() {
